@@ -13,11 +13,11 @@ var Pump = function (request) {
  * Pump start
  */
 Pump.prototype.start = function () {
-	Log.debug("Pump", "start");
+	Log.notice("Pump", "start");
 
 	var gpio4 = gpio.export(4, {
 		direction: 'out',
-		ready: function() {
+		ready: function () {
 		}
 	});
 
@@ -28,17 +28,17 @@ Pump.prototype.start = function () {
 	Messager.sendMessage(message);
 
 	return;
-}
+};
 
 /**
  * Pump stop
  */
 Pump.prototype.stop = function () {
-	Log.debug("Pump", "stop");
+	Log.notice("Pump", "stop");
 
 	var gpio4 = gpio.export(4, {
 		direction: 'in',
-		ready: function() {
+		ready: function () {
 		}
 	});
 
@@ -49,6 +49,6 @@ Pump.prototype.stop = function () {
 	Messager.sendMessage(message);
 
 	return;
-}
+};
 
 module.exports = Pump;

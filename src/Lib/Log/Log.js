@@ -1,81 +1,126 @@
 'use strict';
 
-var Colors          = require('colors');
-var Info            = require('../Util/Info.js');
-var Config          = require('../../../config/config.js');
+var Colors, Info, Config;
 
-var Log = function(config) {
-	this.log = config.log;
-	this.maxLogCache = config.maxLogCache;
+Colors = require('colors');
+Info = require('../Util/Info.js');
+Config = require('../../../config/config.js');
 
-	this.cache = Array();
+var Log;
+Log = function (config) {
+	this.logs = config.logs;
+	this.cache = [];
 
-	this.addCache = function(value) {
-		this.cache.push(value);
+	/**
+	 *
+	 * @param value
+	 */
+	this.addCache = function (value) {
+		if (value.message.type != 'logs') {
+			this.cache.push(value);
+		}
+	};
+
+	/**
+	 *
+	 * @param level
+	 * @param type
+	 * @param message
+	 * @returns {{date: string, level: *, type: *, uptime: *, memory: *, message: *}}
+	 */
+	this.getLog = function (level, type, message) {
+		try {
+			message = JSON.parse(message);
+		} catch (ex) {
+		}
+
+		return {
+			date: (new Date()).toJSON(), level: level, type: type,
+			uptime: Info.uptime(), memory: Info.memory(), message: message,
+		};
+	};
+
+	/**
+	 *
+	 * @param log
+	 * @returns {*}
+	 */
+	this.logFormat = function (log) {
+		var date;
+
+		if (log.level == "Debug") {
+			date = ("[" + log.date + "] ").green;
+		} else if (log.level == "Notice") {
+			date = ("[" + log.date + "] ").yellow;
+		} else {
+			date = ("[" + log.date + "] ").red;
+		}
+
+		var type = ("[" + log.type + "] ").magenta;
+		var uptime = ("[" + log.uptime + " s] ").grey;
+		var memory = ("[" + log.memory + " MB] ").grey;
+		var level = ("[" + log.level + "] ").grey;
+
+		return date + uptime + memory + level + type + JSON.stringify(log.message);
 	}
 };
 
 /**
  * Debug
  *
- * @param type
+ * @param messagetype
  * @param message
  */
-Log.prototype.debug = function (type, message) {
-	if (this.log == 'Debug') {
-		var date = ("[" + (new Date()).toJSON() + "] ").green;
-		var type = ("[" + type + "] ").magenta;
-		var up = ("[" + Info.uptime() + " s] ").grey;
-		var memory = ("[" + Info.memory() + " MB] ").grey;
-		var log = date + up + memory + type + message;
+Log.prototype.debug = function (messagetype, message) {
+	var log = this.getLog('Debug', messagetype, message);
 
-		this.addCache(log);
-		console.log(log);
+	if (this.logs.output.level == 'Debug') {
+		console.log(this.logFormat(log));
 	}
-}
+
+	if (this.logs.cache.level == 'Debug') {
+		this.addCache(log);
+	}
+};
 
 /**
  * Notice
  *
- * @param type
+ * @param messagetype
  * @param message
  */
-Log.prototype.notice = function (type, message) {
-	if (this.log == 'Debug' || this.log == 'Notice') {
+Log.prototype.notice = function (messagetype, message) {
+	var log = this.getLog('Notice', messagetype, message);
 
-		var date = ("[" + (new Date()).toJSON() + "] ").yellow;
-		var type = ("[" + type + "] ").magenta;
-		var up = ("[" + Info.uptime() + " s] ").grey;
-		var memory = ("[" + Info.memory() + " MB] ").grey;
-		var log = date + up + memory + type + message;
-
-		this.addCache(log);
-		console.log(log);
+	if (this.logs.output.level == 'Debug' || this.logs.output.level == 'Notice') {
+		console.log(this.logFormat(log));
 	}
-}
+
+	if (this.logs.cache.level == 'Debug' || this.logs.cache.level == 'Notice') {
+		this.addCache(log);
+	}
+};
 
 /**
  * Error
  *
- * @param type
+ * @param messagetype
  * @param message
  */
-Log.prototype.error = function (type, message) {
-	if (this.log == 'Debug' || this.log == 'Notice' || this.log == 'Error') {
+Log.prototype.error = function (messagetype, message) {
+	var log = this.getLog('Error', messagetype, message);
 
-		var date = ("[" + (new Date()).toJSON() + "] ").red;
-		var type = ("[" + type + "] ").magenta;
-		var up = ("[" + Info.uptime() + " s] ").grey;
-		var memory = ("[" + Info.memory() + " MB] ").grey;
-		var log = date + up + memory + type + message;
-
-		this.addCache(log);
-		console.log(log);
+	if (this.logs.output.level == 'Debug' || this.logs.output.level == 'Notice' || this.logs.output.level == 'Error') {
+		console.log(this.logFormat(log));
 	}
-}
+
+	if (this.logs.cache.level == 'Debug' || this.logs.cache.level == 'Notice' || this.logs.cache.level == 'Error') {
+		this.addCache(log);
+	}
+};
 
 Log.prototype.getLogs = function () {
 	return this.cache;
-}
+};
 
 module.exports = new Log(Config);

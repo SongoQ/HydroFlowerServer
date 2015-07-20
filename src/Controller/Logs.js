@@ -1,6 +1,5 @@
 'use strict';
 
-var Messager = require('../Lib/Messager.js');
 var Log = require('../Lib/Log/Log.js');
 
 var Logs = function (request) {
@@ -9,15 +8,13 @@ var Logs = function (request) {
 };
 
 Logs.prototype.fetch = function () {
-	Log.debug("Log", "getLogs");
+	Log.notice("Log", "fetch");
 
 	var message = {};
 	message.type = "logs";
 	message.value = Log.getLogs();
 
-	Messager.sendMessage(message);
-
-	return;
-}
+	return message;
+};
 
 module.exports = Logs;

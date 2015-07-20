@@ -4,7 +4,7 @@ var Messager = require('./Messager.js');
 var Log = require('./Log/Log.js');
 
 var Exit = function (hash) {
-	Log.debug("User", "Exit " + hash);
+	Log.notice("User", "Exit " + hash);
 
 	var message = {};
 	message.type = 'chat-exit';

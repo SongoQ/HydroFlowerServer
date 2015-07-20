@@ -1,0 +1,28 @@
+{
+  "name": "hydro-flower",
+  "preferGlobal": "true",
+  "version": "0.0.1",
+  "author": "Marcin Chyłek",
+  "description": "Hydro Flower",
+  "maintainers": [
+    {
+      "name": "Marcin Chyłek",
+      "email": "marcin@chylek.pl"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:SongoQ/HydroFlowerServer.git"
+  },
+  "dependencies": {
+    "nodejs-websocket": "*",
+    "request": "*",
+    "gpio": "*",
+    "colors": "*"
+  },
+  "analyze": false,
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  }
+}

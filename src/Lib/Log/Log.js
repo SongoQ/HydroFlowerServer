@@ -17,7 +17,11 @@ Log = function (config) {
 	 */
 	this.addCache = function (value) {
 		if (value.message.type != 'logs') {
-			this.cache.push(value);
+			this.cache.unshift(value);
+
+			if(this.cache.length > this.logs.cache.maxLine) {
+				this.cache.shift();
+			}
 		}
 	};
 

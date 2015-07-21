@@ -8,6 +8,8 @@ var Response = require('./src/Response/Response.js');
 var Exit = require('./src/Lib/Exit.js');
 var Log = require('./src/Lib/Log/Log.js');
 var Messager = require('./src/Lib/Messager.js');
+var Settings = require('./src/Lib/Settings.js');
+var TimerPump = require('./src/Lib/Timer/TimerPump.js');
 
 global.config = require('./config/config.js');
 process.title = config.processName;
@@ -29,6 +31,11 @@ process.title = config.processName;
 process.on('uncaughtException', function (err) {
 	Log.error("System", "Caught exception: " + err);
 });
+
+/**
+ * Default settings
+ */
+Settings.setParams(config.settings);
 
 /**
  * Start process
@@ -67,3 +74,8 @@ global.server = ws.createServer(function (connection) {
 });
 
 server.listen(config.port);
+
+/**
+ * Timer pump
+ */
+TimerPump.run();

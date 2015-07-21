@@ -20,7 +20,7 @@ Response.prototype.send = function (saveLog) {
 	if (this.message) {
 		this.connection.sendText(JSON.stringify(this.message));
 
-    	Log.notice("Response", JSON.stringify(this.message));
+    	Log.debug("Response", JSON.stringify(this.message));
     }
 };
 

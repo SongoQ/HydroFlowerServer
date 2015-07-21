@@ -13,9 +13,9 @@ var Messager = function () {
  * @param message
  */
 Messager.prototype.sendMessage = function (message) {
-	server.connections.forEach(function (connection) {
-		Log.debug("Messager", JSON.stringify(message));
+	Log.notice("Messager", JSON.stringify(message));
 
+	server.connections.forEach(function (connection) {
 		var response = new Response(connection);
 		response.renderSuccess(message);
 		response.send();

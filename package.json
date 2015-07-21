@@ -18,7 +18,8 @@
     "nodejs-websocket": "*",
     "request": "*",
     "gpio": "*",
-    "colors": "*"
+    "colors": "*",
+    "dateformat": "*"
   },
   "analyze": false,
   "license": "MIT",

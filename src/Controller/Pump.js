@@ -2,7 +2,7 @@
 
 var Messager = require('../Lib/Messager.js');
 var Log = require('../Lib/Log/Log.js');
-var gpio = require("gpio");
+var PumpGPIO = require('../Lib/PumpGPIO.js');
 
 var Pump = function (request) {
 	this.request = request;
@@ -15,18 +15,13 @@ var Pump = function (request) {
 Pump.prototype.start = function () {
 	Log.notice("Pump", "start");
 
-	var gpio4 = gpio.export(4, {
-		direction: 'out',
-		ready: function () {
-		}
-	});
+	PumpGPIO.start();
 
 	var message = {};
 	message.type = "pump";
 	message.value = "start ok";
 
 	Messager.sendMessage(message);
-
 	return;
 };
 
@@ -36,18 +31,13 @@ Pump.prototype.start = function () {
 Pump.prototype.stop = function () {
 	Log.notice("Pump", "stop");
 
-	var gpio4 = gpio.export(4, {
-		direction: 'in',
-		ready: function () {
-		}
-	});
+	PumpGPIO.stop();
 
 	var message = {};
 	message.type = "pump";
 	message.value = "stop ok";
 
 	Messager.sendMessage(message);
-
 	return;
 };
 

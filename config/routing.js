@@ -12,4 +12,8 @@ routing.logs                         = {};
 routing.logs.controller              = 'fetch';
 routing.logs.class                   = 'Logs.js';
 
+routing.settings_fetch               = {};
+routing.settings_fetch.controller    = 'fetch';
+routing.settings_fetch.class         = 'Settings.js';
+
 module.exports = routing;

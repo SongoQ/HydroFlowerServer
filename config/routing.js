@@ -16,4 +16,8 @@ routing.settings_fetch               = {};
 routing.settings_fetch.controller    = 'fetch';
 routing.settings_fetch.class         = 'Settings.js';
 
+routing.settings_set                 = {};
+routing.settings_set.controller      = 'set';
+routing.settings_set.class           = 'Settings.js';
+
 module.exports = routing;

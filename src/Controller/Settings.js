@@ -22,4 +22,17 @@ Settings.prototype.fetch = function () {
 	return message;
 };
 
+Settings.prototype.set = function () {
+	var value = this.request.getParam("value");
+	Log.notice("settings_set", value);
+
+	SettingsConfig.setParams(value);
+
+	var message = {};
+	message.type = "settings";
+	message.value = SettingsConfig.getParams();
+
+	return message;
+};
+
 module.exports = Settings;
